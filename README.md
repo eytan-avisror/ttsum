@@ -66,27 +66,27 @@ List node taints
 ```text
 $ ttsum taints
 NAME                         	  TAINTS
-ip-10-82-155-58.ec2.internal 	  app=web:NoSchedule
-ip-10-82-253-196.ec2.internal	  app=web:NoSchedule
-ip-10-82-204-150.ec2.internal	  app=web:NoSchedule
-ip-10-82-183-247.ec2.internal  	app=web:NoSchedule
-ip-10-82-215-83.ec2.internal 	  app=web:NoSchedule
-ip-10-82-198-233.ec2.internal  	app=db:NoSchedule
-ip-10-82-190-200.ec2.internal	  app=db:NoSchedule
+ip-10-20-30-58.ec2.internal     app=web:NoSchedule
+ip-10-20-30-196.ec2.internal    app=web:NoSchedule
+ip-10-20-30-150.ec2.internal    app=web:NoSchedule
+ip-10-20-30-247.ec2.internal    app=web:NoSchedule
+ip-10-20-30-83.ec2.internal     app=web:NoSchedule
+ip-10-20-30-233.ec2.internal    app=db:NoSchedule
+ip-10-20-30-200.ec2.internal    app=db:NoSchedule
 ```
 
 Similarly you can use a match selector
 ```text
 $ ttsum taints --match "app=web:NoSchedule)"
 NAME                         	  TAINTS
-ip-10-82-155-58.ec2.internal 	  app=web:NoSchedule
-ip-10-82-253-196.ec2.internal	  app=web:NoSchedule
-ip-10-82-204-150.ec2.internal	  app=web:NoSchedule
-ip-10-82-183-247.ec2.internal  	app=web:NoSchedule
-ip-10-82-215-83.ec2.internal 	  app=web:NoSchedule
+ip-10-20-30-58.ec2.internal     app=web:NoSchedule
+ip-10-20-30-196.ec2.internal    app=web:NoSchedule
+ip-10-20-30-150.ec2.internal    app=web:NoSchedule
+ip-10-20-30-247.ec2.internal    app=web:NoSchedule
+ip-10-20-30-83.ec2.internal     app=web:NoSchedule
 
 $ ttsum taints --match "app=db:NoSchedule)"
 NAME                         	  TAINTS
-ip-10-82-198-233.ec2.internal  	app=db:NoSchedule
-ip-10-82-190-200.ec2.internal	  app=db:NoSchedule
+ip-10-20-30-233.ec2.internal    app=db:NoSchedule
+ip-10-20-30-200.ec2.internal    app=db:NoSchedule
 ```

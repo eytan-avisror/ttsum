@@ -15,11 +15,13 @@ package cli
 import (
 	"log"
 	"os"
+	"sort"
 
 	"github.com/eytan-avisror/ttsum/pkg/resources"
 	"github.com/eytan-avisror/ttsum/pkg/taints"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
+	v1 "k8s.io/api/core/v1"
 )
 
 var taintCmd = &cobra.Command{
@@ -60,6 +62,21 @@ func RunTaintsCommand(cmd *cobra.Command, args []string) {
 		resourceTaints = resources.FilterTaints(resourceTaints, expr, false)
 	}
 
+	results := make([]TaintsResult, 0)
+	for resource, rawTaints := range resourceTaints {
+		results = append(results, TaintsResult{
+			ResourceReference: resources.ResourceReference{
+				Name:      resource.Name,
+				Namespace: resource.Namespace,
+			},
+			Taints: rawTaints,
+		})
+	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Name < results[j].Name
+	})
+
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"NAME", "TAINTS"})
 	table.SetAutoWrapText(false)
@@ -75,12 +92,17 @@ func RunTaintsCommand(cmd *cobra.Command, args []string) {
 	table.SetNoWhiteSpace(true)
 	data := make([][]string, 0)
 
-	for resource, rawTaints := range resourceTaints {
-		data = append(data, []string{resource.Name, taints.PrintPretty(rawTaints)})
+	for _, result := range results {
+		data = append(data, []string{result.Name, taints.PrintPretty(result.Taints)})
 	}
 
 	table.AppendBulk(data)
 	table.Render()
+}
+
+type TaintsResult struct {
+	resources.ResourceReference
+	Taints []v1.Taint
 }
 
 func init() {

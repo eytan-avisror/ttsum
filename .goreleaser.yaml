@@ -1,0 +1,28 @@
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+builds:
+  - id: ttsum
+    main: ./
+    binary: ttsum
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    ldflags:
+      - -s 
+      - -w 
+      - -X github.com/eytan-avisror/ttsum/cmd/cli.gitCommit={{.Commit}} 
+      - -X github.com/eytan-avisror/ttsum/cmd/cli.buildDate={{.Date}} 
+      - -X github.com/eytan-avisror/ttsum/cmd/cli.pkgVersion={{.Version}}
+archives:
+  - builds:
+    - ttsum
+    name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    wrap_in_directory: false
+    format: tar.gz
+    files:
+    - LICENSE

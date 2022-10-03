@@ -15,11 +15,13 @@ package cli
 import (
 	"log"
 	"os"
+	"sort"
 
 	"github.com/eytan-avisror/ttsum/pkg/resources"
 	"github.com/eytan-avisror/ttsum/pkg/tolerations"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
+	v1 "k8s.io/api/core/v1"
 )
 
 var (
@@ -73,6 +75,21 @@ func RunTolerationsCommand(cmd *cobra.Command, args []string) {
 		resourceTolerations = resources.FilterTolerations(resourceTolerations, expr, false)
 	}
 
+	results := make([]TolerationsResult, 0)
+	for resource, rawTolerations := range resourceTolerations {
+		results = append(results, TolerationsResult{
+			ResourceReference: resources.ResourceReference{
+				Name:      resource.Name,
+				Namespace: resource.Namespace,
+			},
+			Tolerations: rawTolerations,
+		})
+	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Namespace < results[j].Namespace
+	})
+
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"NAMESPACE", "NAME", "TOLERATIONS"})
 	table.SetAutoWrapText(false)
@@ -88,12 +105,17 @@ func RunTolerationsCommand(cmd *cobra.Command, args []string) {
 	table.SetNoWhiteSpace(true)
 	data := make([][]string, 0)
 
-	for resource, rawTolerations := range resourceTolerations {
-		data = append(data, []string{resource.Namespace, resource.Name, tolerations.PrintPretty(rawTolerations)})
+	for _, result := range results {
+		data = append(data, []string{result.Namespace, result.Name, tolerations.PrintPretty(result.Tolerations)})
 	}
 
 	table.AppendBulk(data)
 	table.Render()
+}
+
+type TolerationsResult struct {
+	resources.ResourceReference
+	Tolerations []v1.Toleration
 }
 
 func init() {

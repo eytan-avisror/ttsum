@@ -29,7 +29,7 @@ var (
 	// buildDate in ISO8601 format, output of $(date -u +'%Y-%m-%dT%H:%M:%SZ')
 	//It should be set during build via -ldflags.
 	buildDate string
-	// version is the aws-auth package version
+	// version is the ttsum package version
 	pkgVersion string = "dev"
 )
 
