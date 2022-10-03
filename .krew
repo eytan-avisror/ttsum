@@ -1,0 +1,41 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: ttsum
+spec:
+  version: {{ .TagName }}
+  homepage: https://github.com/eytan-avisror/ttsum
+  shortDescription: Visualize taints and tolerations
+  description: |
+    This plugin makes viewing taints/tolerations accross cluster resources easier
+  platforms:
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: amd64
+    {{addURIAndSha "https://github.com/eytan-avisror/ttsum/releases/download/{{ .TagName }}/ttsum_{{ .TagName }}_darwin_amd64.tar.gz" .TagName }}
+    bin: ttsum
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: arm64
+    {{addURIAndSha "https://github.com/eytan-avisror/ttsum/releases/download/{{ .TagName }}/ttsum_{{ .TagName }}_darwin_arm64.tar.gz" .TagName }}
+    bin: ttsum
+  - selector:
+      matchLabels:
+        os: linux
+        arch: amd64
+    {{addURIAndSha "https://github.com/eytan-avisror/ttsum/releases/download/{{ .TagName }}/ttsum_{{ .TagName }}_linux_amd64.tar.gz" .TagName }}
+    bin: ttsum
+  - selector:
+      matchLabels:
+        os: linux
+        arch: arm64
+    {{addURIAndSha "https://github.com/eytan-avisror/ttsum/releases/download/{{ .TagName }}/ttsum_{{ .TagName }}_linux_arm64.tar.gz" .TagName }}
+    bin: ttsum
+  - selector:
+      matchLabels:
+        os: windows
+        arch: amd64
+    {{ addURIAndSha "https://github.com/eytan-avisror/ttsum/releases/download/{{ .TagName }}/ttsum_{{ .TagName }}_windows_amd64.tar.gz" .TagName }}
+    bin: ttsum.exe
