@@ -7,7 +7,7 @@ spec:
   homepage: https://github.com/eytan-avisror/ttsum
   shortDescription: Visualize taints and tolerations
   description: |
-    This plugin makes viewing taints/tolerations accross cluster resources easier
+    This plugin makes viewing taints/tolerations across cluster resources easier
   platforms:
   - selector:
       matchLabels:
