@@ -23,6 +23,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
+
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
 )
 
 var (
